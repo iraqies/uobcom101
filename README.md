@@ -8,3 +8,4 @@ Fully static: just open `index.html`, or host the folder on GitHub Pages / Netli
 - **Schedule**: group A/B/C and subgroup filtering, week view, full term list (data is embedded in `index.html`)
 
 Fonts load from Google Fonts when online. Your group choice is kept in your browser only.
+- **Halls**: hall guide with floor plans and search (Arabic)
