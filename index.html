@@ -41,10 +41,12 @@ button{cursor:pointer}
 .topbar-in{max-width:1120px;margin:auto;padding:0 28px;height:60px;display:flex;align-items:center;justify-content:space-between;gap:16px}
 .brand{font:600 22px/1 var(--font-display);letter-spacing:-.02em}
 .brand span{font:400 12px var(--font-ui);color:var(--muted-foreground);margin-left:8px;letter-spacing:0}
-.tabs{display:inline-flex;background:var(--muted);padding:4px;border-radius:calc(var(--radius) + 2px);gap:2px}
-.tab{border:0;background:transparent;height:36px;padding:0 18px;border-radius:calc(var(--radius) - 2px);color:var(--muted-foreground);font-weight:500;transition:background .2s var(--ease),color .2s var(--ease)}
+.tabs{position:relative;display:inline-flex;background:var(--muted);padding:4px;border-radius:calc(var(--radius) + 2px);gap:2px}
+.tab{position:relative;z-index:1;border:0;background:transparent;height:36px;padding:0 18px;border-radius:calc(var(--radius) - 2px);color:var(--muted-foreground);font-weight:500;transition:color .25s var(--ease),transform .15s var(--ease)}
 .tab:hover{color:var(--foreground)}
-.tab[aria-selected="true"]{background:var(--background);color:var(--foreground);box-shadow:0 1px 2px oklch(0 0 0/.4)}
+.tab[aria-selected="true"]{color:var(--foreground)}
+.tabpill{position:absolute;top:4px;bottom:4px;left:0;width:0;border-radius:calc(var(--radius) - 2px);background:var(--background);box-shadow:0 1px 2px oklch(0 0 0/.4)}
+.tabpill.ready{transition:transform .4s var(--ease),width .4s var(--ease)}
 .term{font-size:12px;color:var(--muted-foreground);border:1px solid var(--border);border-radius:999px;padding:5px 12px;white-space:nowrap}
 
 .content{max-width:1120px;margin:auto;padding:0 28px 64px}
@@ -69,7 +71,7 @@ button{cursor:pointer}
 .pagehead h2{font:600 24px/1.2 var(--font-display);letter-spacing:-.015em}
 .sub{color:var(--muted-foreground);font-size:13px;margin-top:2px}
 .controls{display:flex;gap:8px}
-.select{height:40px;border:1px solid var(--input);background:var(--card);border-radius:calc(var(--radius) - 2px);padding:0 12px;font-weight:500;transition:border-color .15s var(--ease)}
+.select{height:40px;border:1px solid var(--input);background:var(--card);border-radius:calc(var(--radius) - 2px);padding:0 12px;font-weight:500;transition:border-color .2s var(--ease),transform .15s var(--ease)}
 .select:hover{border-color:var(--ring)}
 option{background:var(--card)}
 
@@ -86,14 +88,14 @@ option{background:var(--card)}
 .panelhead h3{font:600 15px var(--font-ui)}
 .meta{font-size:13px;color:var(--muted-foreground)}
 .weeknav{display:flex;gap:8px;align-items:center;color:var(--muted-foreground);font-size:13px}
-.iconbtn{width:40px;height:40px;border:1px solid var(--input);background:transparent;border-radius:calc(var(--radius) - 2px);font-size:16px;transition:background .15s var(--ease)}
+.iconbtn{width:40px;height:40px;border:1px solid var(--input);background:transparent;border-radius:calc(var(--radius) - 2px);font-size:16px;transition:background .2s var(--ease),transform .15s var(--ease)}
 .iconbtn:hover{background:var(--muted)}
 
 .days{display:grid;grid-template-columns:repeat(7,1fr);padding:12px 12px 4px;gap:4px}
-.day{border:0;background:transparent;border-radius:calc(var(--radius) - 2px);min-height:60px;padding:6px 0;color:var(--muted-foreground);display:grid;justify-items:center;align-content:center;gap:2px;transition:background .15s var(--ease)}
+.day{border:0;background:transparent;border-radius:calc(var(--radius) - 2px);min-height:60px;padding:6px 0;color:var(--muted-foreground);display:grid;justify-items:center;align-content:center;gap:2px;transition:background .25s var(--ease),transform .15s var(--ease)}
 .day:hover{background:var(--muted)}
-.day small{font-size:12px}
-.day b{font-size:16px;font-weight:600;color:var(--foreground)}
+.day small{font-size:12px;transition:color .25s var(--ease)}
+.day b{font-size:16px;font-weight:600;color:var(--foreground);transition:color .25s var(--ease)}
 .day[aria-pressed="true"]{background:var(--primary)}
 .day[aria-pressed="true"] small,.day[aria-pressed="true"] b{color:var(--primary-foreground)}
 .day.today b{text-decoration:underline;text-decoration-color:var(--brand);text-underline-offset:4px;text-decoration-thickness:2px}
@@ -132,6 +134,32 @@ option{background:var(--card)}
 .faqlist details[open] summary::after{transform:rotate(45deg)}
 .faqlist summary:hover{color:var(--brand)}
 .faqlist details p{padding:0 20px 18px;color:var(--muted-foreground);font-size:14px;line-height:1.65;max-width:60ch}
+
+/* motion: ease-out only (no bounce), short, and fully disabled for reduced-motion users */
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+@keyframes fromRight{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
+@keyframes fromLeft{from{opacity:0;transform:translateX(-18px)}to{opacity:1;transform:none}}
+.tab:active,.day:active,.iconbtn:active,.select:active{transform:scale(.95)}
+.iconbtn:hover{transform:translateY(-1px)}.iconbtn:active{transform:scale(.92)}
+.hero video{animation:fadein 1.4s var(--ease) both}
+.hero-copy>*{animation:rise .8s var(--ease) both}
+.hero-copy>:nth-child(2){animation-delay:.08s}.hero-copy>:nth-child(3){animation-delay:.16s}.hero-copy>:nth-child(4){animation-delay:.24s}
+.faq h2{animation:rise .8s var(--ease) .3s both}
+.faqlist details{animation:rise .7s var(--ease) both;animation-delay:calc(.38s + var(--i,0)*70ms)}
+.event,.upitem{animation:rise .45s var(--ease) both;animation-delay:calc(var(--i,0)*45ms)}
+#allEvents .event{animation:none}
+#days[data-dir="next"] .day{animation:fromRight .4s var(--ease) both;animation-delay:calc(var(--i)*25ms)}
+#days[data-dir="prev"] .day{animation:fromLeft .4s var(--ease) both;animation-delay:calc((6 - var(--i))*25ms)}
+.daynote{animation:rise .4s var(--ease) both}
+.event,.upitem{transition:background .2s var(--ease)}
+.faqlist{interpolate-size:allow-keywords}
+.faqlist details::details-content{block-size:0;overflow:clip;transition:block-size .4s var(--ease),content-visibility .4s allow-discrete}
+.faqlist details[open]::details-content{block-size:auto}
+.faqlist details[open] p{animation:rise .45s var(--ease) both}
+.faqlist summary{transition:color .2s var(--ease),padding-left .25s var(--ease)}
+.faqlist summary:hover{padding-left:26px}
+.stat .v{transition:color .3s var(--ease)}
 .hidden{display:none!important}
 
 @media(max-width:860px){.grid2{grid-template-columns:1fr}}
@@ -155,7 +183,7 @@ option{background:var(--card)}
 <body>
 <header class="topbar"><div class="topbar-in">
   <div class="brand">UOBCOM 101<span>University of Baghdad · College of Medicine</span></div>
-  <div class="tabs" role="tablist" aria-label="Sections">
+  <div class="tabs" role="tablist" aria-label="Sections"><span class="tabpill" id="tabpill" aria-hidden="true"></span>
     <button class="tab" role="tab" id="tab-home" aria-controls="home" aria-selected="true">Home</button>
     <button class="tab" role="tab" id="tab-schedule" aria-controls="schedule" aria-selected="false" tabindex="-1">Schedule</button>
   </div>
@@ -176,9 +204,9 @@ option{background:var(--card)}
   <section class="faq" aria-labelledby="faqTitle">
     <h2 id="faqTitle">Frequently asked questions</h2>
     <div class="faqlist">
-      <details><summary>What is UOBCOM 101?</summary><p>UOBCOM 101 is a student-built workspace for the College of Medicine at the University of Baghdad. It brings your timetable and study life into one calm, organized place.</p></details>
-      <details><summary>Who is it for?</summary><p>It is built for first-year medical students, Year 1 · Term 1, 2026–27. Groups A, B and C are all included.</p></details>
-      <details><summary>Who makes UOBCOM 101?</summary><p>Students, for students. It is an independent project and is not run by the university.</p></details>
+      <details style="--i:0"><summary>What is UOBCOM 101?</summary><p>UOBCOM 101 is a student-built workspace for the College of Medicine at the University of Baghdad. It brings your timetable and study life into one calm, organized place.</p></details>
+      <details style="--i:1"><summary>Who is it for?</summary><p>It is built for first-year medical students, Year 1 · Term 1, 2026–27. Groups A, B and C are all included.</p></details>
+      <details style="--i:2"><summary>Who makes UOBCOM 101?</summary><p>Students, for students. It is an independent project and is not run by the university.</p></details>
     </div>
   </section>
 </section>
@@ -210,9 +238,22 @@ const events=()=>((timetable?.groups[group])||[]).filter(e=>!e.subgroup||e.subgr
 const startOfWeek=d=>{let x=new Date(d);x.setDate(x.getDate()-(x.getDay()+6)%7);x.setHours(12,0,0,0);return x};
 const badge=e=>`<span class="badge ${e.subgroup?'practical':'lecture'}">${e.subgroup?'Practical':'Lecture'}</span>`;
 const meta=e=>`${e.code} · ${e.location}${e.subgroup?' · '+e.subgroup:''}`;
-const evTime=e=>`<div class="event"><div class="time"><b>${e.start}</b>${e.end}</div><div><div class="eventname">${e.name}</div><div class="eventmeta">${meta(e)}</div></div>${badge(e)}</div>`;
+const evTime=(e,i)=>`<div class="event" style="--i:${Math.min(i,8)}"><div class="time"><b>${e.start}</b>${e.end}</div><div><div class="eventname">${e.name}</div><div class="eventmeta">${meta(e)}</div></div>${badge(e)}</div>`;
 const evDate=e=>`<div class="event"><div class="time"><b>${fmtDate(e.date).toLocaleDateString('en-US',{month:'short',day:'numeric'})}</b>${e.start}–${e.end}</div><div><div class="eventname">${e.name}</div><div class="eventmeta">${meta(e)}</div></div>${badge(e)}</div>`;
 
+function renderDay(){
+ const all=events();
+ $('dateLabel2').textContent=pretty(fmtDate(selectedDate))+' · '+group+' / '+group+subgroup;
+ const note=(timetable.notes||{})[selectedDate];
+ $('dayNote').innerHTML=note?`<div class="daynote">${note}</div>`:'';
+ const day=all.filter(e=>e.date===selectedDate);
+ $('dayEvents').innerHTML=day.length?day.map(evTime).join(''):'<div class="empty">No sessions scheduled for this day. Enjoy the breathing room.</div>';
+}
+function countTo(el,n){
+ if(matchMedia('(prefers-reduced-motion: reduce)').matches||!isFinite(n)){el.textContent=n;return}
+ const t0=performance.now(),d=600;
+ (function step(t){const p=Math.min(1,(t-t0)/d),e=1-Math.pow(1-p,3);el.textContent=Math.round(n*e);if(p<1)requestAnimationFrame(step)})(t0);
+}
 function render(){
  $('group').value=group;$('subgroup').value=subgroup;
  $('statGroup').textContent=group+' · '+group+subgroup;
@@ -220,37 +261,38 @@ function render(){
  const week=Array.from({length:7},(_,i)=>{let d=new Date(start);d.setDate(start.getDate()+i);return d});
  $('dateLabel2').textContent=pretty(date)+' · '+group+' / '+group+subgroup;
  const next=all.filter(e=>e.date>=todayKey).slice(0,5);
- $('upcoming').innerHTML=next.length?next.map(e=>`<div class="upitem"><div class="update"><b>${fmtDate(e.date).getDate()}</b>${fmtDate(e.date).toLocaleDateString('en-US',{month:'short'})}</div><div><strong>${e.name}</strong><small>${e.start}–${e.end} · ${e.location}</small></div></div>`).join(''):'<div class="empty">No upcoming sessions found.</div>';
+ $('upcoming').innerHTML=next.length?next.map((e,i)=>`<div class="upitem" style="--i:${i}"><div class="update"><b>${fmtDate(e.date).getDate()}</b>${fmtDate(e.date).toLocaleDateString('en-US',{month:'short'})}</div><div><strong>${e.name}</strong><small>${e.start}–${e.end} · ${e.location}</small></div></div>`).join(''):'<div class="empty">No upcoming sessions found.</div>';
  const tw=startOfWeek(fmtDate(todayKey)), mon=keyDate(tw), sun=keyDate(new Date(tw.getTime()+6*864e5));
- $('statClasses').textContent=all.filter(e=>e.date>=mon&&e.date<=sun).length;
+ const cls=all.filter(e=>e.date>=mon&&e.date<=sun).length;if($('statClasses').dataset.v!==String(cls)){$('statClasses').dataset.v=cls;countTo($('statClasses'),cls)}
  $('statNext').textContent=next[0]?next[0].code:'—';
  $('statNextTime').textContent=next[0]?pretty(fmtDate(next[0].date))+' · '+next[0].start:'No upcoming classes';
  // schedule
  $('weekLabel').textContent=week[0].toLocaleDateString('en-US',{month:'short',day:'numeric'})+' – '+week[6].toLocaleDateString('en-US',{month:'short',day:'numeric'});
- $('days').innerHTML=week.map(d=>{const k=keyDate(d);return `<button class="day ${k===todayKey?'today':''}" aria-pressed="${k===selectedDate}" data-date="${k}"><small>${d.toLocaleDateString('en-US',{weekday:'short'})}</small><b class="tnum">${d.getDate()}</b></button>`}).join('');
- document.querySelectorAll('.day').forEach(b=>b.onclick=()=>{selectedDate=b.dataset.date;render()});
- const note=(timetable.notes||{})[selectedDate];
- $('dayNote').innerHTML=note?`<div class="daynote">${note}</div>`:'';
- const day=all.filter(e=>e.date===selectedDate);
- $('dayEvents').innerHTML=day.length?day.map(evTime).join(''):'<div class="empty">No sessions scheduled for this day. Enjoy the breathing room.</div>';
+ $('days').innerHTML=week.map(d=>{const k=keyDate(d);return `<button class="day ${k===todayKey?'today':''}" aria-pressed="${k===selectedDate}" data-date="${k}" style="--i:${week.indexOf(d)}"><small>${d.toLocaleDateString('en-US',{weekday:'short'})}</small><b class="tnum">${d.getDate()}</b></button>`}).join('');
+ document.querySelectorAll('.day').forEach(b=>b.onclick=()=>{selectedDate=b.dataset.date;document.querySelectorAll('.day').forEach(x=>x.setAttribute('aria-pressed',x===b));renderDay()});
+ renderDay();
  $('totalSessions').textContent=all.length+' sessions this term';
  $('allEvents').innerHTML=all.map(evDate).join('');
 }
 function changeGroup(g,s){group=g;subgroup=s;store.set('uobcom-group',g);store.set('uobcom-subgroup',s);render()}
 $('group').onchange=()=>changeGroup($('group').value,subgroup);
 $('subgroup').onchange=()=>changeGroup(group,$('subgroup').value);
-$('prev').onclick=()=>{weekOffset--;render()};$('next').onclick=()=>{weekOffset++;render()};
+function nav(d){const x=fmtDate(selectedDate);x.setDate(x.getDate()+7*d);selectedDate=keyDate(x);const el=$('days');el.dataset.dir=d>0?'next':'prev';render();clearTimeout(nav.t);nav.t=setTimeout(()=>delete el.dataset.dir,700)}
+$('prev').onclick=()=>nav(-1);$('next').onclick=()=>nav(1);
 
 // tabs
 const tabs=[...document.querySelectorAll('.tab')];
+const pill=$('tabpill');
+function movePill(){const t=tabs.find(x=>x.getAttribute('aria-selected')==='true');if(!t)return;pill.style.width=t.offsetWidth+'px';pill.style.transform=`translateX(${t.offsetLeft}px)`}
 function show(name,focus){
  tabs.forEach(t=>{const on=t.id==='tab-'+name;t.setAttribute('aria-selected',on);t.tabIndex=on?0:-1;if(on&&focus)t.focus()});
  ['home','schedule'].forEach(p=>$(p).classList.toggle('hidden',p!==name));
  if(location.hash!=='#'+name)history.replaceState(null,'','#'+name);
- scrollTo(0,0);
+ movePill();scrollTo(0,0);
 }
 tabs.forEach((t,i)=>{t.onclick=()=>show(t.id.slice(4));t.onkeydown=e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){const n=tabs[(i+1)%2];show(n.id.slice(4),true)}}});
 if(location.hash==='#schedule')show('schedule');
+movePill();requestAnimationFrame(()=>pill.classList.add('ready'));addEventListener('resize',movePill);if(document.fonts)document.fonts.ready.then(movePill);
 
 // respect reduced motion for the hero video
 const v=$('heroVideo');
